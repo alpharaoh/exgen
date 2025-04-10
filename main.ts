@@ -6,3 +6,5 @@ const App = exgen.component({
   description: "Application shell",
   output: "An application with a sidebar with 3 items (home, data, settings)",
 })
+
+console.log(await App.run())

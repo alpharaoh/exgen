@@ -1,7 +1,10 @@
 import { z } from "zod"
+import dotenv from "dotenv"
 import OpenAI from "openai"
 
-const client = new OpenAI()
+dotenv.config()
+
+const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
 interface ComponentOptions {
   cacheStrategy: "none" | "force-cache",
@@ -115,20 +118,22 @@ class Component {
       text: {
         format: {
           type: "json_schema",
-          name: "ui",
-          description: "Dynamically generated UI",
+          name: "html_gen",
+          description: "Dynamically generated HTML UI",
           strict: true,
           schema: {
             type: "object",
+            additionalProperties: false,
+            required: ["html"],
             properties: {
               html: {
                 type: "string",
                 description: "The full HTML for the component",
               }
-            }
-          }
-        }
-      }
+            },
+          },
+        },
+      },
     })
 
     const parsedResponse = JSON.parse(response.output_text)
