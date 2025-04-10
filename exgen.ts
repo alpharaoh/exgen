@@ -4,7 +4,10 @@ import OpenAI from "openai"
 
 dotenv.config()
 
-const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+const client = new OpenAI({
+  apiKey: process.env.GEMINI_API_KEY,
+  baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/"
+})
 
 interface ComponentOptions {
   cacheStrategy: "none" | "force-cache",
@@ -33,6 +36,7 @@ input:
 }
 
 output:
+\`\`\`html
 <div>
   <h1>Table display with 10 rows of people</h1>
   <table>
@@ -97,6 +101,7 @@ output:
     </tbody>
   </table>
 </div>    
+\`\`\`
 
 </example>
 
@@ -111,36 +116,21 @@ class Component {
   }
 
   async run() {
-    // placeholder
-    const response = await client.responses.create({
-      model: "gpt-4o",
-      input: prompt + JSON.stringify(this.options),
-      text: {
-        format: {
-          type: "json_schema",
-          name: "html_gen",
-          description: "Dynamically generated HTML UI",
-          strict: true,
-          schema: {
-            type: "object",
-            additionalProperties: false,
-            required: ["html"],
-            properties: {
-              html: {
-                type: "string",
-                description: "The full HTML for the component",
-              }
-            },
-          },
-        },
-      },
+    const response = await client.chat.completions.create({
+      model: "gemini-2.0-flash",
+      messages: [
+        { role: "system", content: prompt },
+        { role: "user", content: JSON.stringify(this.options) },
+      ],
     })
 
-    const parsedResponse = JSON.parse(response.output_text)
+    const rawResponse = response.choices[0].message.content ?? ""
 
-    console.log(parsedResponse)
+    const parsedRespone = rawResponse.replace(/```html\n([\s\S]*?)\n```/g, "")
 
-    return parsedResponse.html
+    console.log(parsedRespone)
+
+    return parsedRespone
   }
 }
 
