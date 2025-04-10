@@ -126,11 +126,9 @@ class Component {
 
     const rawResponse = response.choices[0].message.content ?? ""
 
-    const parsedRespone = rawResponse.replace(/```html\n([\s\S]*?)\n```/g, "")
+    const parsedResponse = rawResponse.replace(/```html\s*([\s\S]*?)\s*```/, "$1")
 
-    console.log(parsedRespone)
-
-    return parsedRespone
+    return parsedResponse
   }
 }
 
