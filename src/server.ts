@@ -10,7 +10,7 @@ app.get("/", async (_, res) => {
     cacheStrategy: "force-cache",
     name: "Application",
     description: "Application shell",
-    output: "An application with a sidebar with 3 items (home, data, settings)",
+    output: "An application with a sidebar with 3 items (home, data, settings). It should also have room for children {{Table}}",
   })
 
   const Table = exgen.component({

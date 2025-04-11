@@ -2,11 +2,12 @@
   "name": "exgen",
   "version": "1.0.0",
   "type": "module",
-  "description": "",
+  "description": "GenAI full-stack framework",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node --experimental-strip-types --watch src/server.ts"
+    "dev": "node --experimental-strip-types --watch src/**/*.{ts,js,tsx,jsx}",
+    "build": "babel --extensions '.ts,.tsx,.js,.jsx' --out-dir dist"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +20,20 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.27.0",
+    "@babel/core": "^7.26.10",
+    "@babel/plugin-transform-react-jsx": "^7.25.9",
     "@types/express": "^5.0.1",
     "@types/node": "^22.14.0"
+  },
+  "babel": {
+    "plugins": [
+      ["@babel/plugin-transform-react-jsx", { 
+        "pragma": "createComponent",
+        "pragmaFrag": "Fragment",
+        "throwIfNamespace": false,
+        "runtime": "classic"  
+      }]
+    ]
   }
 }
