@@ -35,7 +35,6 @@ class Component {
   }
 
   async run() {
-    console.log(cache)
     const hasChildren = this.children.length > 0
 
     let prompt = promptTemplate
@@ -52,8 +51,6 @@ e.g. <div>{{Table}}</div>
     }
 
     const isCached = cache[this.options.name]
-
-    console.log(!!isCached, this.options.name)
 
     let rawResponse: string
     if (isCached) {
