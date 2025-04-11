@@ -8,3 +8,10 @@ export interface ComponentOptions {
   inputs?: z.ZodType,
 }
 
+export interface Component {
+  options: ComponentOptions,
+  children: Component[],
+
+  addChild(child: Component): void,
+  run(): Promise<string>,
+}

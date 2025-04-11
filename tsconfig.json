@@ -11,5 +11,5 @@
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true
   },
-  "include": ["src", "types/global.d.ts"]
+  "include": ["src/**/*.{tsx,ts,js,jsx}", "types/global.d.ts", "types/exgen.d.ts"]
 }

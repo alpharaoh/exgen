@@ -16,11 +16,6 @@ app.get("/", async (_, res) => {
         description="A stats card component showing the value 10%"
         output="A stats card component with a title, a value, and a description"
       />
-      <StatsCard2
-        cacheStrategy="none"
-        description="A stats card component showing the value 10%"
-        output="A stats card component with a title, a value, and a description"
-      />
       <Table
         cacheStrategy="none"
         description="A table component"
