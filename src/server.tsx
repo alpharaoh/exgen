@@ -11,7 +11,18 @@ app.get("/", async (_, res) => {
       description="Application shell"
       output="An application with a sidebar with 3 items (home, data, settings). It should also have room for children {{Table}}"
     >
+      <StatsCard
+        cacheStrategy="none"
+        description="A stats card component showing the value 10%"
+        output="A stats card component with a title, a value, and a description"
+      />
+      <StatsCard2
+        cacheStrategy="none"
+        description="A stats card component showing the value 10%"
+        output="A stats card component with a title, a value, and a description"
+      />
       <Table
+        cacheStrategy="none"
         description="A table component"
         output="A table component with a header and 3 rows"
       />

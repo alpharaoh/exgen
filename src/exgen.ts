@@ -1,8 +1,8 @@
-import { z } from "zod"
 import dotenv from "dotenv"
 import OpenAI from "openai"
 
-import { promptTemplate } from "./prompt.ts"
+import { childrenPromptTemplate, promptTemplate } from "./prompt.ts"
+import { ComponentOptions } from "./types/exgen"
 
 dotenv.config()
 
@@ -13,15 +13,7 @@ const client = new OpenAI({
   baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/"
 })
 
-interface ComponentOptions {
-  cacheStrategy: "none" | "force-cache",
-  name: string,
-  description: string,
-  output: string,
-  inputs?: z.ZodType,
-}
-
-class Component {
+export class Component {
   options: ComponentOptions
   children: Component[]
 
@@ -39,15 +31,7 @@ class Component {
 
     let prompt = promptTemplate
     if (hasChildren) {
-      prompt += `
-<important>
-The following components are children of this component:
-${this.children.map(child => `{{${child.options.name}}}`).join("\n")}. 
-
-You must return the HTML for this component with all of it's children. These children should be in tags.
-
-e.g. <div>{{Table}}</div>
-</important>`
+      prompt += childrenPromptTemplate(this.children.map(child => child.options.name))
     }
 
     const isCached = cache[this.options.name]
@@ -106,7 +90,7 @@ function createComponent(tag: string, props: ComponentOptions, ...children: Comp
   return output
 }
 
-(globalThis as any).createComponent = createComponent
+globalThis.createComponent = createComponent
 
 const exgen = new Exgen()
 export default exgen

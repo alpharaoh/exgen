@@ -88,3 +88,13 @@ output:
 
 Produce the HTML for this. Make sure it's beatiful and well formatted. (use CSS and a sarif font)
 `
+
+export const childrenPromptTemplate = (componentNames: string[]) => `
+<important>
+The following components are children of this component:
+${componentNames.map((childName) => `{{${childName}}}`).join("\n")}. 
+
+You must return the HTML for this component with all of it's children. These children should be in tags.
+
+e.g. <div>{{Table}}</div>
+</important>`;

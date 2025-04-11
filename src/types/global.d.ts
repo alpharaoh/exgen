@@ -1,6 +1,12 @@
 export { }
 
 declare global {
+  function createComponent(
+    tag: string,
+    props: ComponentOptions,
+    ...children: Component[]
+  ): Component;
+
   namespace JSX {
     interface IntrinsicElements {
       [elemName: string]: {
