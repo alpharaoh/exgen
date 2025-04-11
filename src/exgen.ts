@@ -4,6 +4,8 @@ import OpenAI from "openai"
 
 dotenv.config()
 
+const cache: Record<string, string> = {}
+
 const client = new OpenAI({
   apiKey: process.env.GEMINI_API_KEY,
   baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/"
@@ -105,7 +107,7 @@ output:
 
 </example>
 
-Produce the HTML for this. Make sure it's beatufully styled.
+Produce the HTML for this. Make sure it's beatiful and well formatted. (use CSS)
 `
 
 class Component {
@@ -122,6 +124,7 @@ class Component {
   }
 
   async run() {
+    console.log(cache)
     const hasChildren = this.children.length > 0
 
     let prompt = promptTemplate
@@ -137,23 +140,38 @@ e.g. <div>{{Table}}</div>
 </important>`
     }
 
-    console.log(prompt)
+    const isCached = cache[this.options.name]
 
-    const response = await client.chat.completions.create({
-      model: "gemini-2.0-flash",
-      messages: [
-        { role: "system", content: prompt },
-        { role: "user", content: JSON.stringify(this.options) },
-      ],
-    })
+    let rawResponse: string
+    if (isCached) {
+      rawResponse = isCached
+    } else {
+      const response = await client.chat.completions.create({
+        model: "gemini-2.0-flash",
+        messages: [
+          { role: "system", content: prompt },
+          { role: "user", content: JSON.stringify(this.options) },
+        ],
+      })
+      rawResponse = response.choices[0].message.content ?? ""
 
-    const rawResponse = response.choices[0].message.content ?? ""
+      if (this.options.cacheStrategy === "force-cache") {
+        cache[this.options.name] = rawResponse
+      }
+    }
 
     let parsedResponse = rawResponse.replace(/```html\s*([\s\S]*?)\s*```/, "$1")
 
     if (hasChildren) {
       for (const child of this.children) {
-        const childResponse = await child.run()
+        const isCached = cache[child.options.name]
+
+        const childResponse = isCached ? isCached : await child.run()
+
+        if (child.options.cacheStrategy === "force-cache") {
+          cache[child.options.name] = childResponse
+        }
+
         // Replace the childs tag with the actual HTML
         parsedResponse = parsedResponse.replace(new RegExp(`{{${child.options.name}}}`, "g"), childResponse)
       }
