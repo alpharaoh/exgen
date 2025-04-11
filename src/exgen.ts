@@ -14,10 +14,10 @@ interface ComponentOptions {
   name: string,
   description: string,
   output: string,
-  inputs?: z.ZodType[],
+  inputs?: z.ZodType,
 }
 
-const prompt = `
+const promptTemplate = `
 You are an expert at building software. You will be given a component spec and you must return the HTML for the component given the spec.
 
 The component spec is a JSON object with the following keys:
@@ -105,17 +105,36 @@ output:
 
 </example>
 
-Produce the HTML for this:
+Produce the HTML for this. Make sure it's beatufully styled.
 `
 
 class Component {
   options: ComponentOptions
+  children: Component[]
 
-  constructor(options: ComponentOptions) {
+  constructor(options: ComponentOptions, children: Component[] = []) {
     this.options = options
+    this.children = children
+  }
+
+  addChild(child: Component) {
+    this.children.push(child)
   }
 
   async run() {
+    const hasChildren = this.children.length > 0
+
+    let prompt = promptTemplate
+    if (hasChildren) {
+      prompt += `
+        The following components are children of this component:
+        ${this.children.map(child => `{{${child.options.name}}}`).join("\n")}. 
+
+        You must return the HTML for this component with all of it's children. These children should be in tags.
+
+        e.g. <div>{{Table}}</div>`
+    }
+
     const response = await client.chat.completions.create({
       model: "gemini-2.0-flash",
       messages: [
@@ -126,7 +145,15 @@ class Component {
 
     const rawResponse = response.choices[0].message.content ?? ""
 
-    const parsedResponse = rawResponse.replace(/```html\s*([\s\S]*?)\s*```/, "$1")
+    let parsedResponse = rawResponse.replace(/```html\s*([\s\S]*?)\s*```/, "$1")
+
+    if (hasChildren) {
+      for (const child of this.children) {
+        const childResponse = await child.run()
+        // Replace the childs tag with the actual HTML
+        parsedResponse = parsedResponse.replace(new RegExp(`{{${child.options.name}}}`, "g"), childResponse)
+      }
+    }
 
     return parsedResponse
   }
