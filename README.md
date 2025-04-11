@@ -1,49 +1,34 @@
-### Exgen
+## Exgen
 
-Creating a LLM generated HTML for each request + backend implementation
-
-Backends are largely managing, transforming, and storing data. This can be done by an LLM.
-
-This is a good paradigm that is different from lovable and the others. This is dynamic, and it is not static.
-
-Possible use cases:
-
-- Displaying dynamic data and allowing users to interact with it how they want
+Exgen enables dynamic, backend-driven HTML generation using Large Language Models (LLMs) to build web applications. Unlike traditional static frontends, Exgen leverages LLMs to handle both the backend logic and HTML generation in real-time, offering a flexible, evolving framework where the backend and frontend are more integrated.
 
 Syntax:
-
 ```js
+import exgen from "exgen"
+
 const dbTool = exgen.tool({
     databaseUrl: "postgres://localhost:5432/mydb",
     schemaDescription: "It has a users table, posts table, comments table",
 })
 
-const TableData = exgen.component({
-    cacheStrategy: "none", // Always regenerate on every request
-    name: "Graph display",
-    description: "Displays a graph of data of financial statements",
-    inputs: z.array(
-        z.object({
-            name: z.string(),
-            description: z.string(),
-            type: z.enum(["string", "number", "json"]),
-        })
-    ),
-    tools: [dbTool],
-    output: "a graph",
+const Table = exgen.component({
+  name: "Table",
+  output: "Displays a table of posts",
+  tools: [dbTool],
+  cacheStrategy: "none", // This table component will be regenerated for every request
 })
 
-const Application = exgen.component({
-    cacheStrategy: "force-cache", // Default: Generate once and store
-    name: "application", 
-    description: "Application shell",
-    output: "An application with a sidebar with 3 items (home, data, settings)",
+const App = exgen.component({
+  name: "Application",
+  output: "An application with a sidebar and table",
+  cacheStrategy: "force-cache", // This component will be generated once and cached for future requests
 })
 
-export default exgen.app(() => (
-  <AppShell>
-    <GraphDisplay />
-  </AppShell>
-))
+App.addChild(Table)
+
+const htmlContent = await App.run() // Use `res.send(htmlContent)` to send the HTML to the client from the server
+  
 ```
 
+
+Exgen dynamically generates HTML based on component definitions and interactions, allowing the LLM to handle complex data retrieval, processing, and UI rendering in real-time. This approach redefines the traditional web development model, where the backend directly manages both the logic and the UI.
