@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node --experimental-strip-types --watch src/server.js",
+    "dev": "node --experimental-strip-types --watch dist/server.js",
     "build": "babel --extensions '.ts,.tsx,.js,.jsx' --out-dir dist"
   },
   "keywords": [],
