@@ -4,7 +4,7 @@ declare global {
   namespace JSX {
     interface IntrinsicElements {
       [elemName: string]: {
-        cacheStrategy: string;
+        cacheStrategy: "force-cache" | "none";
         description: string;
         output: string;
         [key: string]: any;

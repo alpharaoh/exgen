@@ -47,7 +47,7 @@
       ]
     ],
     "plugins": [
-      "./babel-jsx-tag-to-string",
+      "./babel/jsx-tag-to-string",
       [
         "@babel/plugin-transform-react-jsx",
         {
