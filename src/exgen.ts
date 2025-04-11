@@ -2,7 +2,7 @@ import dotenv from "dotenv"
 import OpenAI from "openai"
 
 import { childrenPromptTemplate, promptTemplate } from "./prompt.ts"
-import { ComponentOptions } from "./types/exgen"
+import { type ComponentOptions } from "./types/exgen"
 
 dotenv.config()
 
