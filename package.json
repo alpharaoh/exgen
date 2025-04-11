@@ -55,17 +55,6 @@
           "throwIfNamespace": false,
           "runtime": "classic"
         }
-      ],
-      [
-        "module-resolver",
-        {
-          "alias": {
-            "extensions": [
-              ".tsx",
-              ".ts"
-            ]
-          }
-        }
       ]
     ]
   }
