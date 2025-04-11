@@ -12,7 +12,6 @@ app.get("/", async (_, res) => {
       output="An application with a sidebar with 3 items (home, data, settings). It should also have room for children {{Table}}"
     >
       <Table
-        cacheStrategy="none"
         description="A table component"
         output="A table component with a header and 3 rows"
       />

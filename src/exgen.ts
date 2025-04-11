@@ -93,7 +93,7 @@ class Exgen {
 
 function createComponent(tag: string, props: ComponentOptions, ...children: Component[]) {
   const output = exgen.component({
-    cacheStrategy: props.cacheStrategy,
+    cacheStrategy: props.cacheStrategy || "none",
     name: tag,
     description: props.description,
     output: props.output,
