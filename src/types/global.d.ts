@@ -11,7 +11,11 @@ declare global {
 
   namespace JSX {
     interface IntrinsicElements {
-      [elemName: string]: any
+      [elemName: string]: {
+        cacheStrategy?: "none" | "force-cache";
+        description: string;
+        output: string;
+      }
     }
   }
 }

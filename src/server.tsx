@@ -6,22 +6,22 @@ const port = 3000
 
 app.get("/", async (_, res) => {
   const app = (
-    <Application
+    <application
       cacheStrategy="force-cache"
       description="Application shell"
       output="An application with a sidebar with 3 items (home, data, settings). It should also have room for children {{Table}}"
     >
-      <StatsCard
+      <stats-card
         cacheStrategy="none"
         description="A stats card component showing the value 10%"
         output="A stats card component with a title, a value, and a description"
       />
-      <Table
+      <table
         cacheStrategy="none"
         description="A table component"
         output="A table component with a header and 3 rows"
       />
-    </Application>
+    </application>
   )
 
   const htmlContent = await app.run()
