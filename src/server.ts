@@ -1,6 +1,5 @@
 import express from "express"
 import exgen from "./exgen.ts"
-import { z } from "zod"
 
 const app = express()
 const port = 3000
@@ -18,11 +17,6 @@ app.get("/", async (_, res) => {
     name: "Table",
     description: "A table component",
     output: "A table component with a header and 3 rows",
-    inputs: z.array(z.object({
-      name: z.string(),
-      email: z.string(),
-      phone: z.string(),
-    })),
   })
 
   App.addChild(Table)
