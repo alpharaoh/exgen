@@ -15,9 +15,7 @@ app.get("/", async (_, res) => {
         cacheStrategy="none"
         description="A table component"
         output="A table component with a header and 3 rows"
-      >
-        Hello, world!
-      </Table>
+      />
     </Application>
   )
 
