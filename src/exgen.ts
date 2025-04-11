@@ -127,13 +127,17 @@ class Component {
     let prompt = promptTemplate
     if (hasChildren) {
       prompt += `
-        The following components are children of this component:
-        ${this.children.map(child => `{{${child.options.name}}}`).join("\n")}. 
+<important>
+The following components are children of this component:
+${this.children.map(child => `{{${child.options.name}}}`).join("\n")}. 
 
-        You must return the HTML for this component with all of it's children. These children should be in tags.
+You must return the HTML for this component with all of it's children. These children should be in tags.
 
-        e.g. <div>{{Table}}</div>`
+e.g. <div>{{Table}}</div>
+</important>`
     }
+
+    console.log(prompt)
 
     const response = await client.chat.completions.create({
       model: "gemini-2.0-flash",
