@@ -7,14 +7,14 @@ const port = 3000
 
 app.get("/", async (_, res) => {
   const App = exgen.component({
-    cacheStrategy: "none",
-    name: "application",
+    cacheStrategy: "force-cache",
+    name: "Application",
     description: "Application shell",
     output: "An application with a sidebar with 3 items (home, data, settings)",
   })
 
   const Table = exgen.component({
-    cacheStrategy: "force-cache",
+    cacheStrategy: "none",
     name: "Table",
     description: "A table component",
     output: "A table component with a header and 3 rows",
