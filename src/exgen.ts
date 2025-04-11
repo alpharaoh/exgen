@@ -91,5 +91,22 @@ class Exgen {
   }
 }
 
+function createComponent(tag: string, props: ComponentOptions, ...children: Component[]) {
+  const output = exgen.component({
+    cacheStrategy: props.cacheStrategy,
+    name: tag,
+    description: props.description,
+    output: props.output,
+  })
+
+  for (const child of children) {
+    output.addChild(child)
+  }
+
+  return output
+}
+
+(globalThis as any).createComponent = createComponent
+
 const exgen = new Exgen()
 export default exgen
