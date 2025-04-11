@@ -1,5 +1,5 @@
 import express from "express"
-import exgen from "./exgen.ts"
+import exgen from "./exgen"
 
 const app = express()
 const port = 3000

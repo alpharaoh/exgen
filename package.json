@@ -23,17 +23,50 @@
     "@babel/cli": "^7.27.0",
     "@babel/core": "^7.26.10",
     "@babel/plugin-transform-react-jsx": "^7.25.9",
+    "@babel/preset-react": "^7.26.3",
+    "@babel/preset-typescript": "^7.27.0",
     "@types/express": "^5.0.1",
-    "@types/node": "^22.14.0"
+    "@types/node": "^22.14.0",
+    "babel-plugin-module-resolver": "^5.0.2"
   },
   "babel": {
+    "presets": [
+      [
+        "@babel/preset-typescript",
+        {
+          "allExtensions": true,
+          "rewriteImportExtensions": true,
+          "isTSX": true
+        }
+      ],
+      [
+        "@babel/preset-react",
+        {
+          "runtime": "classic"
+        }
+      ]
+    ],
     "plugins": [
-      ["@babel/plugin-transform-react-jsx", { 
-        "pragma": "createComponent",
-        "pragmaFrag": "Fragment",
-        "throwIfNamespace": false,
-        "runtime": "classic"  
-      }]
+      [
+        "@babel/plugin-transform-react-jsx",
+        {
+          "pragma": "createComponent",
+          "pragmaFrag": "Fragment",
+          "throwIfNamespace": false,
+          "runtime": "classic"
+        }
+      ],
+      [
+        "module-resolver",
+        {
+          "alias": {
+            "extensions": [
+              ".tsx",
+              ".ts"
+            ]
+          }
+        }
+      ]
     ]
   }
 }

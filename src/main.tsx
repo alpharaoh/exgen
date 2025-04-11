@@ -1,5 +1,18 @@
+import exgen from "./exgen.ts"
+
 function createComponent(tag, props, ...children) {
-  console.log(tag, props, children)
+  const output = exgen.component({
+    cacheStrategy: props.cacheStrategy,
+    name: tag,
+    description: props.description,
+    output: props.output,
+  })
+
+  for (const child of children) {
+    output.addChild(child)
+  }
+
+  return output
 }
 
 const hello = (
@@ -12,6 +25,10 @@ const hello = (
       cacheStrategy="none"
       description="A table component"
       output="A table component with a header and 3 rows"
-    />
+    >
+      Hello, world!
+    </Table>
   </Application >
 )
+
+console.log(await hello.run())
