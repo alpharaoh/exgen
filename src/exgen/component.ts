@@ -1,10 +1,7 @@
-import dotenv from "dotenv"
 import OpenAI from "openai"
 
-import { childrenPromptTemplate, promptTemplate } from "./prompt.ts"
-import { type ComponentOptions } from "./types/exgen"
-
-dotenv.config()
+import { childrenPromptTemplate, promptTemplate } from "../prompt.ts"
+import { type ComponentOptions } from "../types/exgen"
 
 const cache: Record<string, string> = {}
 
@@ -69,28 +66,3 @@ export class Component {
   }
 }
 
-class Exgen {
-  component(options: ComponentOptions) {
-    return new Component(options)
-  }
-}
-
-function createComponent(tag: string, props: ComponentOptions, ...children: Component[]) {
-  const output = exgen.component({
-    cacheStrategy: props.cacheStrategy || "none",
-    name: tag,
-    description: props.description,
-    output: props.output,
-  })
-
-  for (const child of children) {
-    output.addChild(child)
-  }
-
-  return output
-}
-
-globalThis.createComponent = createComponent
-
-const exgen = new Exgen()
-export default exgen

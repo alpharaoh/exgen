@@ -2,7 +2,6 @@ import { type Component, type ComponentOptions } from "./exgen"
 
 export { }
 
-
 declare global {
   const React: any
 
@@ -18,6 +17,8 @@ declare global {
         cacheStrategy?: "none" | "force-cache";
         description: string;
         output: string;
+        // TODO(Akaam): Add proper types
+        tools?: any[]
       }
     }
   }
