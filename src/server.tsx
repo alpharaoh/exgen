@@ -6,14 +6,6 @@ const port = 3000
 
 const dbTool = exgen.tool({})
 
-const table = (
-  <table
-    cacheStrategy="none"
-    description="Renders structured data in rows and columns"
-    output="A table component with 3 columns: Name, Age, and Email. Include 3 sample rows of realistic data. Add a header row with bold labels."
-  />
-)
-
 app.get("*", async (_, res) => {
   const app = (
     <application
@@ -27,7 +19,11 @@ app.get("*", async (_, res) => {
         output="A statistics card showing a metric labeled 'Conversion Rate' with the value '10%' and a subtext indicating improvement from the previous week."
         tools={[dbTool]}
       />
-      {table}
+      <table
+        cacheStrategy="none"
+        description="Renders structured data in rows and columns"
+        output="A table component with 3 columns: Name, Age, and Email. Include 3 sample rows of realistic data. Add a header row with bold labels."
+      />
     </application>
   )
 
