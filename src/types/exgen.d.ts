@@ -15,3 +15,7 @@ export interface Component {
   addChild(child: Component): void,
   run(): Promise<string>,
 }
+
+export interface Tool {
+  options: ToolOptions,
+}
